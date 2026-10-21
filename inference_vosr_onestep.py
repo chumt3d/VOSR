@@ -129,13 +129,14 @@ def preprocess_raw_image(x, args):
     return x
 
 
-def load_dinov2(args, device):
+def load_dinov2(args, device, *, hub_repo_or_dir="facebookresearch/dinov2", hub_source="github"):
+    """Load the encoder; services may supply a verified local Torch Hub tree."""
     if args.enc_type == 'dinov2b':
-        encoder = torch.hub.load('facebookresearch/dinov2', 'dinov2_vitb14')
+        encoder = torch.hub.load(hub_repo_or_dir, 'dinov2_vitb14', source=hub_source)
     elif args.enc_type == 'dinov2l':
-        encoder = torch.hub.load('facebookresearch/dinov2', 'dinov2_vitl14')
+        encoder = torch.hub.load(hub_repo_or_dir, 'dinov2_vitl14', source=hub_source)
     elif args.enc_type == 'dinov2g':
-        encoder = torch.hub.load('facebookresearch/dinov2', 'dinov2_vitg14')
+        encoder = torch.hub.load(hub_repo_or_dir, 'dinov2_vitg14', source=hub_source)
     del encoder.head
     encoder.head = torch.nn.Identity()
 
